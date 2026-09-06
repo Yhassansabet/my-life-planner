@@ -1,0 +1,9 @@
+{
+  "name": "My Life Planner",
+  "short_name": "Life Planner",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f7f8fc",
+  "theme_color": "#6d5dfc",
+  "description": "A simple chronological personal event planner."
+}
