@@ -23,8 +23,8 @@
 const events=[
 {id:1,start:'2026-09-07',name:'General doctor for Health Analysis',cat:'health'},
 {id:2,start:'2026-09-08',name:'Health CheckUp',cat:'health'},
-{id:3,start:'2026-09-09',end:'2026-09-20',name:'Egypt 🇪🇬',location:'Egypt',cat:'travel'},
-{id:4,start:'2026-09-10',name:'Do InBody and shave',cat:'health'},
+{id:3,start:'2026-09-09',end:'2026-09-20',name:'Egypt 🇪🇬',location:'Egypt',cat:'travel',done:true},
+{id:4,start:'2026-09-10',name:'Do InBody and shave',cat:'health',done:true},
 {id:5,start:'2026-09-10',name:"Kassrawy's Birthday 🎂",cat:'personal'},
 {id:6,start:'2026-09-11',name:"Zein's birthday 🎂",location:'Egypt',cat:'personal'},
 {id:7,start:'2026-09-12',name:"Ali's Birthday 🎂",cat:'personal'},
@@ -58,8 +58,9 @@ function fmtDate(e){const s=dateObj(e.start),end=e.end?dateObj(e.end):null,month
 function row(e,done=false){return `<div class="item ${done?'done':''}"><div class="date">${fmtDate(e)}<span class="relative">${dateObj(e.start).getFullYear()}</span></div><div><div class="name">${e.name}</div>${e.location?`<span class="location">📍 ${e.location}</span>`:''}</div><span class="badge ${e.cat}">${done?'Done':catLabel[e.cat]}</span></div>`;}
 function render(){
  const t=today();
- const upcoming=events.filter(e=>(e.end?dateObj(e.end):dateObj(e.start))>=t).sort((a,b)=>dateObj(a.start)-dateObj(b.start)||a.id-b.id);
- const completed=events.filter(e=>(e.end?dateObj(e.end):dateObj(e.start))<t).sort((a,b)=>dateObj(b.start)-dateObj(a.start));
+ const isDone=e=>e.done===true||(e.end?dateObj(e.end):dateObj(e.start))<t;
+ const upcoming=events.filter(e=>!isDone(e)).sort((a,b)=>dateObj(a.start)-dateObj(b.start)||a.id-b.id);
+ const completed=events.filter(isDone).sort((a,b)=>dateObj(b.start)-dateObj(a.start));
  let html='',lastYear=null;
  for(const e of upcoming){const y=dateObj(e.start).getFullYear();if(y!==lastYear){if(lastYear!==null)html+=`<div class="year-divider"><span>${y}</span></div>`;lastYear=y;}html+=row(e);}
  if(!upcoming.length)html='<div class="empty">No upcoming events.</div>';
